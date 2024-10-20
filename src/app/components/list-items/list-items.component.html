@@ -1,0 +1,117 @@
+<div class="container my-3">
+  <div class="d-flex justify-content-between">
+    <h2>List of Items</h2>
+    <!-- Button trigger modal -->
+    <p-button (onClick)="showDialog()" label="Add New Item" />
+  </div>
+</div>
+
+<div class="d-flex flex-wrap justify-content-center">
+  <div *ngFor="let item of allItems; let i = index">
+    <div class="card my-2 mx-2" style="width: 18rem; height: 12rem;">
+      <p-button
+        class="btn btn-sm text-end"
+        (onClick)="confirmDelete($event, item.id)"
+        severity="danger"
+        [outlined]="true"
+      >
+        <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+      </p-button>
+      <div class="card-body">
+        <h5 class="card-title">{{ item.name }}</h5>
+
+        <div *ngIf="item.data">
+          <div class="card-text" *ngFor="let key of item.dataKey">
+            <span class="h6">Item {{ key }} :</span> {{ item.data[key] }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  header="Add New Item"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '25rem' }"
+>
+  <form (ngSubmit)="submit()" [formGroup]="addItemForm">
+    <div class="d-flex flex-column gap-2">
+      <label for="name">Name</label>
+      <input pInputText id="name" formControlName="name" required />
+      <div
+        *ngIf="addItemForm.get('name')?.invalid && (addItemForm.get('name')?.touched || addItemForm.get('name')?.dirty)"
+        class="text-danger"
+      >
+        Name is required.
+      </div>
+    </div>
+
+    <div class="d-flex flex-column gap-2">
+      <label for="year">Year</label>
+      <input
+        pInputText
+        id="year"
+        type="number"
+        formControlName="year"
+        required
+      />
+      <div
+        *ngIf="addItemForm.get('year')?.invalid && (addItemForm.get('year')?.touched || addItemForm.get('year')?.dirty)"
+        class="text-danger"
+      >
+        Year is required.
+      </div>
+    </div>
+
+    <div class="d-flex flex-column gap-2">
+      <label for="price">Price</label>
+      <input
+        pInputText
+        id="price"
+        type="number"
+        formControlName="price"
+        required
+      />
+      <div
+        *ngIf="addItemForm.get('price')?.invalid && (addItemForm.get('price')?.touched || addItemForm.get('price')?.dirty)"
+        class="text-danger"
+      >
+        Price is required.
+      </div>
+    </div>
+
+    <div class="d-flex flex-column gap-2">
+      <label for="cpuModel">CPU Model</label>
+      <input pInputText id="cpuModel" formControlName="cpuModel" required />
+      <div
+        *ngIf="addItemForm.get('cpuModel')?.invalid && (addItemForm.get('cpuModel')?.touched || addItemForm.get('cpuModel')?.dirty)"
+        class="text-danger"
+      >
+        CPU Model is required.
+      </div>
+    </div>
+    <div class="d-flex flex-column gap-2">
+      <label for="hardSize">Hard Size</label>
+      <input pInputText id="hardSize" formControlName="hardSize" required />
+      <div
+        *ngIf="addItemForm.get('hardSize')?.invalid && (addItemForm.get('hardSize')?.touched || addItemForm.get('hardSize')?.dirty)"
+        class="text-danger"
+      >
+        Hard Size is required.
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (onClick)="visible = false"
+      />
+      <p-button type="submit" label="Submit" [disabled]="addItemForm.invalid" />
+    </div>
+  </form>
+</p-dialog>
+<p-toast />
+<p-confirmPopup />
